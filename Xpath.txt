@@ -1,0 +1,54 @@
+1. Xpath Types:
+chropath
+Relative xpath: Does not depend on parent nodes
+absolute xpath: starting from main parent to desired element called absolute xpath
+ 
+1. <input type="text" class="inputtext _58mg _5dba _2ph-" data-type="text" name="firstname" value="" aria-required="true" 
+placeholder="" aria-label="First name" id="u_0_m">
+//tagName[@attribute='value']
+//input[@name='firstname']
+
+2. We can give * in place of tagname 
+//*[@name='firstname']
+
+3. Regular expression
+//tagName[contains(@attribute,'value')]
+//*[contains(@aria-label,'First')]
+
+
+4. Parent to child
+<table cellspacing="0" role="presentation">
+<tbody>
+<tr>
+   <td class="html7magic"><label for="email">Email or phone</label></td>
+   <td class="html7magic"><label for="pass">Password</label></td> 
+</tr>
+<tr> 
+    <td>
+	<input type="email" class="inputtext login_form_input_box" name="email" id="email" data-testid="royal_email">
+	</td>
+	<td>
+	<input type="password" class="inputtext login_form_input_box" name="pass" id="pass" data-testid="royal_pass">
+	</td>
+
+//table[@role='presentation']/tbody/tr[2]/td/input
+
+5.  //table[@role='presentation']/tbody/tr[2]/td[2]/input
+
+//div[@id='searchform']/form/div[2]/div/div/div/div[2]/div/input
+
+6. Siblings handling:
+//div[@id='searchform']/form/div[2]/div/div/div/div[2]/input directly jump to sec sibling
+//div[@id='searchform']/form/div[2]/div/div/div/div[2]/div/following-sibling::input   or fetch first child and then switch to sec
+//td[contains(text(),'Cow')]/preceding-sibling::td/input[@type='checkbox']"
+//div[text()='Extras']/following-sibling::div    sib to sib
+
+7. Child to parent:
+//div[@id='searchform']/parent::li
+
+
+8. By text
+<div class="placeholder" aria-hidden="true">Mobile number or email address</div>
+//*[text()='Mobile number or email address']
+
+

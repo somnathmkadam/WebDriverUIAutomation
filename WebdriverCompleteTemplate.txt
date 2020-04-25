@@ -1,0 +1,304 @@
+Webdriver Basics:
+1. Evey object may not have ID, className or name- Xpath and CSS Preferred
+2. Alpha numeric id may vary on every refresh- check   Ex: "u_0_b"
+3. Confirm the link object with anchor "a" tag
+4. Classes should not have spaces- Compound classes cannot be accepted
+5. Multiple values - Selenium identifies the first one- Scans from top left
+6. Double quotes inside double quotes are not accepted
+7. Xpath/CSS can be defined in n number of ways
+8. Rightclick copy on blue highlighted html code to generate xpath
+9. Firepath depreciated from firefox- used to take xpath on previous versions
+10. when xpath starts with html-Not reliable- Switch browser to get another one
+11. There is no direct way to get CSS in chrome. You will find it in tool bar
+12. Degrade browser to less firefox 55 to ge Firepath
+
+13.console check: $("css") - for css , $x("xpath") or xpath  ---------------- In console window used to verify xpath before placed it in code
+
+14.
+//tagName[@attribute='value'] - xpath syntax
+tagName[attribute='value'] -CSS tagName#id- CSS tagname.classname- CSS 
+//tagName[contains(@attribute,'value')] - xpath regular expression  values contains and whole value we can give partial value 
+tagName[Atrribute*='value'] - Css regular expression
+
+15. ID, name or Classname, Link text, Xpath and Css selector  elements
+
+
+Ex: of xpath
+<input value="Log In" aria-label="Log In" data-testid="royal_login_button" type="submit" id="u_0_b">
+input= Tagname
+value= Attribute
+Log In= value
+Xpath syntax= //tagName[@attribute='value']  we can put * to skip tagname
+
+
+Ex: of css:
+tagName#id: <input type="email" class="inputtext login_form_input_box" name="email" id="email" data-testid="royal_email">      
+#email
+or input#email
+
+Xpath:
+//td[contains(text(),'Cow')]/preceding-sibling::td/input[@type='checkbox']"
+//div[@id='searchform']/form/div[2]/div/div/div/div[2]/div/following-sibling::input
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+1. Static dropdown:
+Select tagname having fixed data init
+
+Select s1 = new Select(driver.findElement(By.id("ctl00_mainContent_ddl_Adult")));
+     s1.selectByIndex(6);
+	 Thread.sleep(4000);
+	s.selectByValue("INR");
+	Thread.sleep(400);
+    s.selectByVisibleText("USD")
+	
+2. When 2 xpath have same values and we want to select second xpath path then
+//a[@value='BOM'])[2]
+	
+	
+3. Parent child relationship here selenium serach for parent first then selects appropriate child check inside that parent only
+//div[@id='ctl00_mainContent_ddl_destinationStation1_CTNR'] //a[@value='PNQ']
+parent xpath space child xpath	
+
+
+4. Keyboard keys: How 
+WebElement destination=driver.findElement(By.id("hp-widget__sTo"));   //store driver method in one element
+destination.sendKeys("BOM")
+destination.sendKeys(Keys.ARROW_DOWN);
+destination.sendKeys(Keys.ENTER);
+
+
+5. Get checkbox and all present on page:
+driver.findElement(By.xpath("xpath")).click;
+syso("get count"+ driver.findElement(by.xpath("xpath")).isselected());  //show checkbox selected or not returns true or false
+
+Now to get all checkboxes:
+syso("get count"+ driver.findElements(by.xpath("xpath")).size());  //here findElements is given bcoz all elements should be selected
+
+also select attribute same for all ex: Type='checkbox'
+so it will select all checkboxes and give count
+
+
+6. Assert: testng's internal method
+Assert.assertTrue(true);
+Ex:
+Assert.assertTrue(driver.findElement(by.xpath("xpath")).isselected());
+
+Assert.assertEquals(actual, expected);
+
+7. After selecting radio button some text or data will get enabled or disabled
+
+driver.findElement(By.xpath(".//*[@id='multi_city_button']/span")).isEnabled();  returns true or false boolean value
+for some websites its not working so we select an elements which changes after enabled and disabled
+put that element in if loop in given example style attributes value changes 0.5 to 1 after enabled so we can write
+
+if(driver.element(By.id("Div")).getAttribute("style").contains("1"))
+{
+Assert.assertTrue(true)
+
+}
+else{
+Assert.assertTrue(false)
+}
+
+
+
+8. Alerts:
+
+       driver.switchTo().alert().accept();
+	   driver.switchTo().alert().dismiss();
+	   driver.switchTo().alert().getText();
+	   
+	   
+9. Clt+shift+f 
+to format your code in proper manner
+
+class first word should be capital
+and if two words then sec should be small  "camalcase" naming conventions
+
+variable first should be small but sec should be captial
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Synchronization: Waiting
+
+Implicit
+Explicit
+Thread.sleep
+Fluent wait
+
+Implicit and Explicit waits are important to achive synchronisation in perticular framework Ex: if you have page in which you set 
+perticular performance load criteria is 5 sec but perticular search took 15 sec to load.
+So we can give explicit wait to that perticular search criteria to load fully without changing others load criteria
+
+Implicit applies globally (Performance issues are not got)
+if you change it to 15 then if normally one search took 5sec to load and now due to some issues its taking 10 sec to load then 
+you cant catch that issue and load if there are more than one search criteria ex:3 took 20 sec so it took (3*15=45) 45 sec to catch
+which ideally should be 15 sec (5*3)
+
+Implicit wait cant wait till given time if he found the result its moving for next steps
+But thread.sleep wait for given time here webdriver is not waiting java code is waiting(Next step is not been executed)
+Explicit wait given for perticular search 
+
+Implicit wait:
+driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+Explicit wait:
+WebDriverWait w =new WebDriverWait(driver,5);
+w.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span.promoInfo")));
+
+Fluent Wait:
+Give polling feature: means its not checking continouslly it checks after certain time durating check again if not found
+then again wait for given time period and then again check till timeout period 
+Ex: if creadit card is giving same element having same xpath means it shows first at one point both are visiable and after some time only 
+second path is visible then we can use fluent wait to skip that time where both are visible
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Actions class: Used for mouse over
+Actions a = new Actions(driver);
+a.moveToElement(driver.findElement(By.xpath("//a[@id='nav-link-accountList']/span[2]"))).contextClick().build().perform();
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Parent to child switching:
+Set<String> windows =driver.getWindowHandles();
+                           
+Iterator<String> ids=  windows.iterator();
+
+             String parentId=      ids.next();
+              String childid=     ids.next();
+              driver.switchTo().window(childid);
+			  
+			  
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Frame: HTML code which is not part of website code 
+Dev just drop it from outside(Not connected to other code)
+Parent Tagname is: iframe
+
+driver.switchTo().frame(driver.findElement(By.cssSelector("iframe.demo-frame")));
+	WebElement source=	driver.findElement((By.id("draggable")));
+	WebElement desti= driver.findElement(By.id("droppable"));
+	
+	Actions a = new Actions(driver);
+	a.dragAndDrop(source, desti).build().perform();
+	
+We can select frame by index:
+Ex if there are two frames then 2 iframe tag should be present. (.size())
+Then 
+driver.switchTo().frame(0); selects 1st frame and frame(1) will select 2nd frame
+
+OR using ID
+//switch to frame1. frame1 Is ID of frame.
+driver.switchTo().frame("frame1");
+	
+wants to switch back to page content
+driver.switchTo().defaultContent();
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+If we want to switch scope to perticular area then:
+
+WebElement minidriver = driver.findElement(By.cssSelector("table.gf-t"));
+System.out.println(minidriver.findElements(By.tagName("a")).size());	
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+Extract Hidden elements: We use Javascripts executer: Ex: in autosuggest
+//JavascriptExecutor
+		JavascriptExecutor js= (JavascriptExecutor)driver;  //return document.getElementById methods used
+		String script = "return document.getElementById(\"fromPlaceName\").value;";
+		String text= (String) js.executeScript(script);
+		
+		//here \ is used to define that its not part of string and  "" inside "" is not allowed so we use this 
+		//return is used to add script into the script string 
+		//.value is like get text
+		
+		
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+SSL certification: sometime when you are loading some websites its showing that your conection is not secure:
+In this case to accept or proceed using using webdriver we use desiredcapabilities class
+
+		//Desired capabilities=
+		//general chrome profile
+		DesiredCapabilities ch=DesiredCapabilities.chrome();
+		//ch.acceptInsecureCerts();
+		ch.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+		ch.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+
+		//Belows to your local browser
+		ChromeOptions c= new ChromeOptions();
+		c.merge(ch);
+		System.setProperty("webdriver.chrome.driver", "");
+		WebDriver driver=new ChromeDriver(c);
+
+		
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+to delete all cookies we use :
+driver.manage().deleteallcookies();
+
+or we can delete one perticular cookie:
+driver.manage().deletecookiename("name");
+
+This can be used when we want to delete session cookie and check whathere website is getting logout from user login and homepage should be displayed
+and we can verify it with geturl to cross verify the homepage
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Take screenshot:
+driver.get("http://google.com");
+File src=	 ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+			FileUtils.copyFile(src,new File("C:\\Users\\kadam.somnath\\screenshot.png"));
+			
+			
+			//((TakesScreenshot)driver) called casting of TakesScreenshot with driver
+			//we can used c directory directly so we can use user directory from c driver which is local directory
+			//or else we can use c driver
+		    //	https://commons.apache.org/proper/commons-io/ download file utils jar
+			//http://commons.apache.org/proper/commons-io/download_io.cgi
+			
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Sorting:
+Collections.sort(copiedList);
+copiedList is arraylist
+
+Collections.reverse(list); //for reverse
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Hub and Node: run programs to local server:
+Steps
+1. Download Selenium server jar
+2. Started the hub where selenium-server-standalone is installed 
+java -jar selenium-server-standalone-3.8.1.jar -role hub
+3. Login to another machine and register it as node for Hub
+4. Download the selenium server jar in node machine as well/ Check java-
+5. java -Dwebdriver.chrome.driver="pathofchromedriver" -jar selenium-server-standalone-3.8.1.jar -role webdriver -hub
+>ipaddressofhub>/grid/register -port 5566
+( Check if java is configured in system variables)
+6.Chrome driver.exe file geckodriver
+
+
+
+
+
+
+
+
+
+	   
+	   
+
+
+
+
+
+
+

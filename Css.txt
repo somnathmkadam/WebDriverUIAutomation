@@ -1,0 +1,36 @@
+Css:
+<input type="text" class="inputtext _58mg _5dba _2ph-" data-type="text" name="lastname" value="" aria-required="true"
+ placeholder="" aria-label="Surname" id="u_0_o">
+ 
+1. tagName[attribute='value']
+input[name='lastname']
+OR
+[name='lastname']
+
+2. tagName#id
+<input type="email" class="inputtext login_form_input_box" name="email" id="email" data-testid="royal_email">
+input#email
+OR
+#email
+
+3. tagName.classname
+input.inputtext login_form_input_box
+
+4. tagName[Atrribute*='value']   regular expression
+input[aria-label*='Sur']
+
+
+5. classname
+
+6. div[class='cb-col cb-col-100 cb-scrd-itms'] div:nth-child(3)
+parent to third child
+
+
+7. tr td:nth-child(2)
+in xpath
+tr/td[2]
+
+
+
+
+
