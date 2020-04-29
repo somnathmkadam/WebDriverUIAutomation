@@ -1,0 +1,132 @@
+Project WebDriver:
+
+1. Create data.properties file where which browser has to select info is given
+2. Create base class from which we trigger browser acc to properties file
+3. Using extends we can access base class
+4. Create pageObject class where all objects (Xpaths/css) are written access using objects
+while returning the webelement it requires webdriver which given by Main class and Main class got it from Base test
+5. Use @Dataprovider anotation for test data
+6. We can utilize url by driver.get(prop.getProperty("url")); 
+7. Create TestNg xml file
+8. Add Suitexml file data in pom file using maven surfire plugin to run testNg xml file using pom file
+9. We can run through cmd: mvn test
+10. Add log4j file in resources folder and add its path in pom file using resources 
+<build>
+   <resources>
+        <resource>
+            <directory>src/main/java/resources</directory>
+            <filtering>true</filtering> 
+        </resource>
+    </resources>
+11. To close browser after completion of each test Each class must wrap into diiferent test bcoz close is given at after test
+12. We can add scrrenshot method in base test and we can invoke this methods using testNG listerens
+Then whenever test got fails it automatically called Screenshot class and take screen shot
+13. Screen shot file name should be different every time so we concatinate class name with file name and fetched class name from Listerens class
+ Also add listerens in Testng file:
+ <listeners>
+     
+        
+         <listener class-name="Academy.listeners"/>
+         <listener class-name="resources.ExtentReporterNG"/>
+         
+
+ </listeners>
+ 
+ 14. We can add extend reports using test ng 
+ Add ExtenreportNG.java file in project level
+ Add <listener class-name="resources.ExtentReporterNG"/> in testNG
+ 15. Now we can run complete project using jenkins:
+ Copy project in Jenking Home
+ Run POM file using Maven
+ 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+Exceptions:
+Null pointer
+No file found
+No such element
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Parameterized Jenkings Build:
+
+If we want to get properties from mvn or jenkings then instead of 
+pro.getProperty("browser")  use system.getProperty("browser")    //browser=chrome
+
+For mvn:
+mvn test -Dbrowser=chrome
+
+For jenkings:
+Select this project is paramterized in General configuration:
+Name: browser
+Choices:
+chorme
+IE
+firefox
+safari
+
+And in Build - Goals: test -Dbrowser="$browser"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Encapsulation:
+Make public-methods in same class-and-private-variables (Variables can not be used outside the class)
+https://way2java.com/oops-concepts/public-methods-and-private-variables/
+
+Oops concept: https://medium.com/@maheshjtp/introduction-to-oops-concept-in-java-with-example-81186da10a3d
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Removing harcoding paths from project:
+Normally we give complete path of file 
+instead of that use 
+(system.getProperty("user.dir")+"\\src\\java\\test\\remaining path")  use this path where system.getProperty("user.dir") gives project path
+
+Path everything at project level always
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Headless mode running browser:
+
+Headless execution of project: means without openning the browser:
+ChromeOptions options = new ChromeOptions();
+options.addArguments("--headless")   //we can run without --
+WebDriver driver = new ChromeDriver(options);
+
+
+
+We can add it in if block:
+String browsername = system.getProperty("browser")
+System.setproperty("webdriver.chorme.driver","path");
+ChromeOptions options = new ChromeOptions();
+
+if(browsername.contains("headless"))
+options.addArguments("--headless") 
+
+if (browsername.contains("chrome"))
+WebDriver driver = new ChromeDriver(options);     //Now give command: mvn test -Dbrowser=chromeheadless  //same add it in jenkins parameter
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Inheritance:
+Using extends keyword we can acces all methods of parent class
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+(interface access by implements)
+implements method used in which we can access all methods of class without body also we can add our body in their methods:
+Ex: implements ITestListerens
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+For paraller excution of test case:
+use in suite give parallel="true">  so all test run parallely 
+But we have to remove static keyword from webdriver
+public Webdriver driver  //global variable
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+We have to add all methods which sharing the same page in webdriver so dont have to open multiple times:
+LandingPage l initalized it at global level so once it initalized it save for next method so does not need to invoke browser again
+LandingPage l=new LandingPage(driver);  by new 
+
+
+
+
+
+
+

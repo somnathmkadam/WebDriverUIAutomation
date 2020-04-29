@@ -1,0 +1,168 @@
+Database connection using jdbc:
+Git commands: https://confluence.atlassian.com/bitbucketserver/basic-git-commands-776639767.html
+Cloud testing
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Database:
+
+Install mysql server 
+create server
+
+Commnads:
+Create database abc;
+use abc;
+create table info(name varchar(20),id int,location varchar(26));
+insert into info values("sam",23, "shshshsh")
+
+describe info   //check outer structure of table
+
+//////////////////////////////////////////////////////////////////////////
+
+Install mysql connection java jar
+drivermanager.getconnection(url,username, password);
+username and password default: root
+url: "jbdc:mysql://"+host+":"+port+"/databasename";
+port: default 3306
+host: localhost
+
+
+Now
+Connection con =drivermanager.getconnection(url,username, password);
+Statement s = con.createStatement();
+ResultSet rs = s.executeQuery("Select * form complete query");
+
+while(rs.next)          //goto first index
+{
+rs.getString("coloumnname");
+
+}
+
+
+Now install selenium standalone server and put data from server to webdriver in sendkeys:
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+git init: to make .git file inside folder (Local repository)
+git add * means add all
+git status   to check what all files added to statsh/staging
+git commit -m "message"
+
+git remote add origin <urlofgit>  only one time change only if you want to change the repository
+git push origin master
+
+
+NOW TO Clone complete project which is already present in git then use git clone
+git clone (URL)
+
+If you make some changes and without add command you do commit then git shows what all things you need to add in red lines (git status use)
+
+Now 
+you can use: git pull origin master   (origin is git branch and master is local branch) to check all latest pushes in git
+
+//////////////////////////////////
+Now to create new branch:
+git checkout -b <branchname> 
+ and to switch branch use: 
+git checkout <branchname>
+
+
+to check all branches present use: connected branch shown by green
+git branch
+
+git commit -m "message"
+now push it in newbranch: git push origin newbranchname  (this create new branch in git)
+
+
+////////////////////////////
+If you want to merge two branches:push newbranch data to master branch
+Then 
+first switch to master branch
+
+git checkout master
+git pull origin master (check all latest commit to git)
+git merge newbranchname
+
+/////////////////////////////////////////////////////////////////////////////////
+if some another guy changes in master branch without knowing to you
+then first pull all code into the newbranch by
+
+goto new branch
+git checkout newbranchname
+git merge master (here is the chances of conflicts) then it shows in your newbranch as head>> changes not presnent in your file
+ 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Cloud Testing:
+To test our code on cloud means some company with dont have there infrastructure they use other companies infrastructure using cloud
+Sauce Lab website gives free demo for 14 days
+
+https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/   to configuration settings/DesiredCapabilities on which browser you want to run etc
+
+https://wiki.saucelabs.com/display/DOCS/Getting+Started+with+Selenium+for+Automated+Website+Testing   //below content are given
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import java.net.URL;
+  
+public class SampleSauceTest {
+  
+  public static final String USERNAME = "YOUR_USERNAME";
+  public static final String ACCESS_KEY = "YOUR_ACCESS_KEY";
+  public static final String URL = "http://" + USERNAME + ":" + ACCESS_KEY + "@ondemand.saucelabs.com:80/wd/hub";
+  
+  public static void main(String[] args) throws Exception {
+  
+  
+ /////////////////////// 
+  Code:
+  import java.net.MalformedURLException;
+
+import java.net.URL;
+
+
+
+import org.openqa.selenium.WebDriver;
+
+import org.openqa.selenium.remote.DesiredCapabilities;
+
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+public class SauceLabsTest {
+
+public static final String USERNAME = "rahul2";
+
+  public static final String ACCESS_KEY = "xxxxx";
+
+  public static final String URL = "http://" + USERNAME + ":" + ACCESS_KEY + "@ondemand.saucelabs.com:80/wd/hub";
+
+
+public static void main(String[] args) throws MalformedURLException {
+DesiredCapabilities caps = DesiredCapabilities.chrome();
+
+caps.setCapability("platform", "Windows 7");
+
+caps.setCapability("version", "51.0");
+
+WebDriver driver=new RemoteWebDriver(new URL(URL), caps);
+
+driver.get("http://google.com");
+
+System.out.println(driver.getTitle());
+
+}
+}
+  
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+ 
+ 
+
+
+
+
+
+
+
+

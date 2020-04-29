@@ -1,0 +1,460 @@
+TestNG:
+<suite name="MobileControllerAPI" verbose="3" allow-return-values="true">
+<parameter name="spreadsheetId" value="1wsac-K1T2VSZHGIIEwFGuztb2dHFcHTgWEWSvrXHTI8"/>  
+
+<test name="testname">  //One Module
+<parameter name="sheet" value="FlightSearch" />
+<classes>
+			<class name="com.yatra.testscripts.FlightSearchTest"/>   //packagename.classname
+</classes>
+</test>
+
+
+<test name="testname">
+<parameter name="sheet" value="FlightSearch" />
+<classes>
+			<class name="com.yatra.testscripts.FlightSearchTest"/>   //packagename.classname
+</classes>
+</test>
+
+</suite>
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Now if we want to exclude perticular method from Test:
+
+Add methods tags inside the class and Add exclude method
+
+<test name="testname">
+<parameter name="sheet" value="FlightSearch" />
+<classes>
+			<class name="com.yatra.testscripts.FlightSearchTest">   //packagename.classname
+			<methods>
+			<exclude name="methodname"/>            //include to add test cases others are skipped 
+			</methods>
+			</class>			
+</classes>
+</test>
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+You can also exclude test cases with starting with some word: Ex: Mobile
+<test name="testname">
+<parameter name="sheet" value="FlightSearch" />
+<classes>
+			<class name="com.yatra.testscripts.FlightSearchTest">   //packagename.classname
+			<methods>
+			<exclude name="Mobile.*"/>            //used .* after word
+			</methods>
+			</class>			
+</classes>
+</test>
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+You can run test cases inside one package:
+
+<suite name="MobileControllerAPI">
+<test name="testname">
+
+
+<packages>
+<package name="packagename"/>
+</packages>
+
+</test>
+</suite>
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+TestNG annotations:
+@Before suite
+@After Suite
+
+@Before test --- test methods (before All classes executed in one test package )
+@After test
+
+@Before class   ----------- scope of this perticular to that class
+@After class
+
+@Before method     ----------- scope of this perticular to that class executed after each method in one class
+@After method
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+@Test executions depends on alphabetical order
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Now we want to run Some test cases in different classes then we can use groups:
+
+
+<suite name="MobileControllerAPI">
+<test name="testname">
+<groups>
+<run>
+   <include name="smoke"/>
+</run>
+</groups>
+<classes>
+			<class name="class1"/>
+			<class name="class2"/>
+			<class name="class3"/>
+			
+</classes>
+</test>
+</suite>
+
+
+And in class we can define methods @Test(groups={"name"})
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+TestNg Helper attributes:
+If we want to execute perticular test method before one method
+then add
+
+@Test(dependsOnMethods={"methodname","methodname"})
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+TestNg Helper attributes:
+@Test(enabled=false)  //Skipped perticular method
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+TestNg Helper attributes:
+@Test(timeOut=400)  miliseconds wait add to perticular test
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Paramerization:
+<parameter name="spreadsheetId" value="1wsac-K1T2VSZHGIIEwFGuztb2dHFcHTgWEWSvrXHTI8"/> 
+We can define it on suite level or test method level
+
+To access it use:
+
+
+@parameters({"spreadsheetId"})
+@Test
+public void method(String abc){
+//it goes inside abc
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+@Dataprovider class: parameterization using dataProvider
+
+
+@Dataprovider
+public object[][] getdata(){
+Object [][] = new Object[3][2];
+
+Object [0][0]="abc";   //row and coloumn
+Object [0][1]="efg";
+
+//same add two more times
+}
+
+Use:
+@Test(dataProvider="getdata")
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Listeners class is used to when we want to do some actions after test pass or fail 
+Ex: get failure logs, take screenshot if test fail
+
+To add listerens 
+
+Add class :
+public class Listerens implements ITestListerens{  //import data 
+}
+
+Also add it testng xml file after suite:
+<listerens>
+<listeren class-name="packagename.classname"/>
+</listerens>
+
+
+After importing data of testlisterens class we got 
+@Override
+@Public methods(ITestResult result){
+
+result.getName //to get name of method which fails
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+We can run tests and OR class paralley:
+
+To run tests give it in suite:
+
+<suite name="suitename" parallel="tests" thread-count="6">  //run 6 test parallely or if count is not given then all test run parallely
+
+if run classes parallely then:
+<test name"testname" parallel="classes" thread-count="2">
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+Get reports:
+after excutions refresh the project
+check for index.html file and copy that path and open it in browser
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Properties file:
+Used to get url and other parameters like username and password:
+
+Created by using .properties file extension
+Ex:
+username=somnath
+
+Access it using properties class object
+Ex:
+Properties pro = new properties();
+FileInputStream fis = new FileInputStream("Path of file with \\");
+pro.load(fis);
+
+pro.getProperty("username");
+
+Ex:
+if(pro.getProperty("browser").equals("chrome")){
+//write a code for chrome browser
+}
+elseif(pro.getProperty("browser").equals("firefox")){
+
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Maven:
+mvn clean 
+mvn compile 
+mvn test  --- by default it clean and complie and add all jars into your repository first time
+
+Also add surfire plugin to pom file to run all package codes using maven Give Test name (Ex: FlightTest) to class
+http://maven.apache.org/surefire/maven-surefire-plugin/examples/testng.html
+
+<build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.0.0-M4</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  
+  <dependencies>   //add above dependencies
+
+username/m2/repository (Maven repository)
+Add name Test to each java file to run 
+Ex:
+FlightTest.java
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+To run TestNG xml file using mvn/maven add below in pom file:
+
+
+<build>
+    <pluginManagement>
+      <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M4</version>
+		
+        <configuration>
+          <suiteXmlFiles>
+            <suiteXmlFile>testng.xml</suiteXmlFile>   //only configuration data with existing plugins
+          </suiteXmlFiles>
+        </configuration>
+		
+		
+      </plugin>
+   </plugins>
+    </pluginManagement>
+  </build>
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Run multiple TestNG xml file using maven use profile and make multiple having one parent profile
+:
+
+<profiles>
+<profile>
+<id>anyname</id>
+//Add above <build> </build> //whole data having testng.xml file
+</profile>
+
+<profile>
+<id>anyname</id>
+//Add above <build> </build> //whole data having testng.xml file
+</profile>
+
+</profiles>
+
+
+Now to execute use: mvn test -PNameoffile  (Dont give space between p and name)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Run our code using jenkings:
+1. install jenkings
+2. Install maven
+3. Select freeStyle project
+4. Copy your project to jenkings home directory
+5. Goto settings/General- Use custom workspace- Directory:- ${JENKINS_HOME}/projectName
+6. Goto Build: Select invoke top level maven targets: select maven version and in Goals: test -PTestName    //<profile> id's name in pom file
+
+
+To get maven in jenkins:
+Install maven 
+Give maven project path in environment variable as:
+MAVEN_HOME: path
+Bin path add in paths
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+To get TestNG reports through jenkins:
+
+1. Goto JENKINS
+2. Goto plugins manager
+3. Install TestNG result plugin
+4. Goto your project configuration
+5. Select Post-build actions (Where testresults.xml file will show) save the project
+
+now to schedule build:
+goto configuration
+select build trigger
+build periodically
+1. minutes(0-59) 2.hourses(0-23) 3.Day in month() 4.month in year(1-12) 5. Days in week (0-7)
+Ex: 0 8 0 0 0
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Print logs we use log4j jars : Install log4j jars
+Used to print error logs and success logs:
+Configuration file is given below add using .xml file in project level with folder resources. And add it as source folder-- Click on project - right click - build path- confi build path- Source-Click add source folder and select created folder as source folder--
+Divides in two parts: Appenders and Loggers where Appender used for error logs:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+    </Console>
+  </Appenders>
+  <Loggers>
+    <Root level="error">
+      <AppenderRef ref="Console"/>
+    </Root>
+  </Loggers>
+</Configuration>
+
+
+1. Where to log files: <Console name="Console" target="SYSTEM_OUT">  at console
+2. How to log? <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/> shows patteren %t is class of which class logs are 
+3. Type of log? <Root level="error">    - Error logs and when it "trace" log all 
+4. <AppenderRef ref="Console"/>   used to Give Where to log files and How to log details to Logger tag by Ref of Appender
+
+Now to access log4j file using class:
+
+Create class and run access logs:
+Add : private static Logger Log = LogManager.getLogger(Demo.class.getname());
+Main method(){
+Log.debug("shhs");
+Log.info("dddd");
+
+Log.error("cddd");
+Log.fatal("bdggdgd");
+
+}
+
+
+
+Now to if we can error/trace logs for specific class and others run as default then:
+Add 
+
+<Logger name="com.foo.Bar" level="trace">
+      <AppenderRef ref="Console"/>
+    </Logger>
+	
+Below <Loggers> where com.foo.Bar is pakage.classname as per your project
+
+Now if we want to Save this logs inside to file without displaying it on console then:
+Add Linked text folder in logs folder on project level
+Add below things in xml file:
+
+<Properties>
+<Property name="basePath">./logs</Property>
+</Properties>
+/// add below <Configuration status="WARN"> show path of file basePath is project path
+
+Then add below things in   <Appenders> gives file path and name prints.log and ${basePath} is path given above:"basePath">./logs  
+<SizeBasedTriggeringPolicy size="500" is means create new file when it reaches 500kb with }/prints-%d{yyyy-MM-dd}.log pattern
+Also change <AppenderRef ref="File"/>
+
+
+<RollingFile name="File" fileName="${basePath}/prints.log" filePattern="${basePath}/prints-%d{yyyy-MM-dd}.log">
+     <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+      <SizeBasedTriggeringPolicy size="500" />
+          </RollingFile>
+		  
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Complete log4j file is given below:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+       <Properties>
+<Property name="basePath">./logs</Property>
+</Properties>
+ 
+  <Appenders>
+      <RollingFile name="File" fileName="${basePath}/prints.log" filePattern="${basePath}/prints-%d{yyyy-MM-dd}.log">
+     <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+      <SizeBasedTriggeringPolicy size="500" />
+          </RollingFile>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+    </Console>
+  </Appenders>
+  <Loggers>
+    <Root level="trace">
+      <AppenderRef ref="File"/>
+    </Root>
+  </Loggers>
+</Configuration>
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+For framwork use:
+Page object pattern:
+Easy to maintain
+All related objects are written in one class
+Easy readability of code
+Eliminate dublicasy
+Reusablity of code
+reliablity
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+To run Log4j file through pom then add resources in <build>
+<build>
+   <resources>
+        <resource>
+            <directory>src/main/java/resources</directory>
+            <filtering>true</filtering> 
+        </resource>
+    </resources>
+	
+Inside resources log4j file is present
+
+
+
+
