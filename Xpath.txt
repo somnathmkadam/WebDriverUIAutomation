@@ -32,6 +32,8 @@ placeholder="" aria-label="First name" id="u_0_m">
 	</td>
 
 //table[@role='presentation']/tbody/tr[2]/td/input
+//div[@class='sumome-react-svg-image-container']//*[local-name()='svg']
+//div[@id='ctl00_mainContent_ddl_destinationStation1_CTNR'] //a[@value='PNQ']
 
 5.  //table[@role='presentation']/tbody/tr[2]/td[2]/input
 
